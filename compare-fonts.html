@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Font &amp; Mood Comparison — Internal Only</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="assets/images/favicon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Scoped to this comparison page only — not used anywhere in the live site */
+  body { background: var(--color-bg-alt); padding: var(--space-6) 0 var(--space-9); }
+  .compare-header { text-align: center; max-width: 720px; margin: 0 auto var(--space-7); padding-inline: var(--space-4); }
+  .compare-header h1 { font-size: var(--step-4); color: var(--color-primary); margin-bottom: var(--space-3); }
+  .compare-header p { color: var(--color-ink-muted); font-size: var(--step-1); }
+  .compare-header .tag { display:inline-block; font-size:0.75rem; letter-spacing:0.12em; text-transform:uppercase; color: var(--color-accent-600); font-weight:700; margin-bottom: var(--space-3); }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+    max-width: 1400px;
+    margin-inline: auto;
+    padding-inline: var(--space-4);
+  }
+  @media (min-width: 1100px) {
+    .compare-grid { grid-template-columns: 1fr 1fr; align-items: start; }
+  }
+
+  .option { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--color-border); background: var(--color-bg); box-shadow: var(--shadow-lg); }
+  .option-label {
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .option-label h2 { font-size: var(--step-1); color: #fff; margin: 0; }
+  .option-label span { font-size: var(--step--1); color: var(--color-accent); font-weight: 600; letter-spacing: 0.04em; }
+
+  /* --- Moodier dark-section treatment, applied inside both options --- */
+  .mood-dark {
+    position: relative;
+    background: radial-gradient(140% 100% at 20% -10%, #163f28 0%, var(--color-bg-dark) 60%);
+    color: var(--color-ink-on-dark);
+    padding: var(--space-7) var(--space-5);
+    overflow: hidden;
+  }
+  .mood-dark::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(60% 50% at 85% 100%, rgba(0,0,0,0.55), transparent 70%);
+    pointer-events: none;
+  }
+  .mood-dark .eyebrow {
+    position: relative; z-index: 1;
+    letter-spacing: 0.22em;
+    color: var(--color-accent);
+  }
+  .mood-dark h3 {
+    position: relative; z-index: 1;
+    font-size: clamp(1.9rem, 1.5rem + 2vw, 2.6rem);
+    line-height: 1.08;
+    margin: var(--space-3) 0 var(--space-4);
+    font-weight: 600;
+  }
+  .mood-dark p {
+    position: relative; z-index: 1;
+    color: var(--color-ink-on-dark-muted);
+    max-width: 46ch;
+    margin-bottom: var(--space-5);
+    transition: opacity 420ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .mood-dark .btn {
+    position: relative; z-index: 1;
+    box-shadow: 0 12px 32px rgba(244,196,48,0.18), var(--shadow-md);
+    transition: transform 420ms cubic-bezier(0.16,1,0.3,1), box-shadow 420ms cubic-bezier(0.16,1,0.3,1);
+  }
+  .mood-dark .btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(244,196,48,0.28), var(--shadow-lg); }
+
+  .mood-light { padding: var(--space-6) var(--space-5); }
+  .mood-light .eyebrow { letter-spacing: 0.2em; }
+  .mood-light h4 {
+    font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2rem);
+    color: var(--color-primary);
+    margin: var(--space-2) 0 var(--space-3);
+    font-weight: 600;
+  }
+  .mood-light p { color: var(--color-ink-muted); }
+
+  .mood-card {
+    margin-top: var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 18px 40px rgba(4,21,12,0.10), 0 4px 10px rgba(4,21,12,0.06);
+  }
+  .mood-card h5 { color: var(--color-primary); font-size: var(--step-1); font-weight: 600; margin-bottom: 0.4rem; }
+  .mood-card p { color: var(--color-ink-muted); font-size: var(--step--1); }
+
+  .fraunces h3, .fraunces h4, .fraunces h5 { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.01em; }
+  .playfair h3, .playfair h4, .playfair h5 { font-family: 'Playfair Display', Georgia, serif; letter-spacing: -0.005em; }
+
+  .compare-note {
+    max-width: 720px;
+    margin: var(--space-7) auto 0;
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-bg);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--step--1);
+    color: var(--color-ink-muted);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <div class="compare-header">
+    <span class="tag">Internal comparison — not linked from the live site</span>
+    <h1>Moodier direction: Fraunces vs. Playfair Display</h1>
+    <p>Same colors, same layout, same copy — only the heading font and section richness (shadows, vignette, spacing) differ between the two options below. Everything else on the actual site stays exactly as it is today.</p>
+  </div>
+
+  <div class="compare-grid">
+
+    <div class="option fraunces">
+      <div class="option-label">
+        <h2>Option A</h2>
+        <span>Fraunces</span>
+      </div>
+      <div class="mood-dark">
+        <p class="eyebrow">Our Philosophy</p>
+        <h3>Charleston real estate, built on integrity.</h3>
+        <p>Kingship Collective is a locally, nationally, and internationally focused real estate firm — transforming the traditional brokerage model through commercial sales, residential real estate, and expert consulting.</p>
+        <a class="btn btn-primary" href="#">Schedule a Consultation</a>
+      </div>
+      <div class="mood-light">
+        <p class="eyebrow">Who We Are</p>
+        <h4>A unique union of three partners</h4>
+        <p>Founded in December 2023, Kingship Collective operates primarily on exclusive, off-market transactions while maintaining on-market offerings to fulfill our fiduciary responsibilities to every client.</p>
+        <div class="mood-card">
+          <h5>Commercial Sales</h5>
+          <p>Office, retail, industrial, hospitality, and multifamily transactions across investment sales, owner-occupied deals, and land development.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="option playfair">
+      <div class="option-label">
+        <h2>Option B</h2>
+        <span>Playfair Display</span>
+      </div>
+      <div class="mood-dark">
+        <p class="eyebrow">Our Philosophy</p>
+        <h3>Charleston real estate, built on integrity.</h3>
+        <p>Kingship Collective is a locally, nationally, and internationally focused real estate firm — transforming the traditional brokerage model through commercial sales, residential real estate, and expert consulting.</p>
+        <a class="btn btn-primary" href="#">Schedule a Consultation</a>
+      </div>
+      <div class="mood-light">
+        <p class="eyebrow">Who We Are</p>
+        <h4>A unique union of three partners</h4>
+        <p>Founded in December 2023, Kingship Collective operates primarily on exclusive, off-market transactions while maintaining on-market offerings to fulfill our fiduciary responsibilities to every client.</p>
+        <div class="mood-card">
+          <h5>Commercial Sales</h5>
+          <p>Office, retail, industrial, hospitality, and multifamily transactions across investment sales, owner-occupied deals, and land development.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="compare-note">Fraunces reads softer and more contemporary; Playfair Display reads more classic and higher-contrast. Body text (this paragraph, all paragraphs, buttons, nav) stays on General Sans either way — only headings change. Tell me which one to apply site-wide, or ask for a third option.</p>
+
+</body>
+</html>
